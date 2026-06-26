@@ -146,6 +146,10 @@ jobs:
 
       - name: Build for Cloudflare
         run: pnpm run build:cloudflare
+        env:
+          UPSTASH_URL: ${{ secrets.UPSTASH_URL }}
+          UPSTASH_TOKEN: ${{ secrets.UPSTASH_TOKEN }}
+          NEXT_PUBLIC_STORAGE_TYPE: ${{ secrets.NEXT_PUBLIC_STORAGE_TYPE }}
 
       - name: Install Wrangler
         run: pnpm add -g wrangler@4.60.0
