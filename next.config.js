@@ -7,6 +7,7 @@ const path = require('path');
 // 检测是否为边缘平台构建
 const isCloudflare = process.env.CF_PAGES === '1' || process.env.BUILD_TARGET === 'cloudflare';
 const isEdgeOne = process.env.EDGEONE_PAGES === '1' || process.env.BUILD_TARGET === 'edgeone';
+const isVercel = process.env.VERCEL === '1';
 const isEdgeBuild = isCloudflare || isEdgeOne;
 
 const optimizedPackageImports = [
@@ -23,8 +24,8 @@ const createNextConfig = (phase) => {
   const isDevelopment = phase === PHASE_DEVELOPMENT_SERVER || process.env.NODE_ENV === 'development';
 
   const nextConfig = {
-  // Cloudflare Pages 不支持 standalone，使用默认输出
-  output: isEdgeBuild ? undefined : 'standalone',
+  // Cloudflare Pages/EdgeOne 不支持 standalone，Vercel 也不需要 standalone
+  output: (isEdgeBuild || isVercel) ? undefined : 'standalone',
   eslint: {
     dirs: ['src'],
     // 在生产构建时忽略 ESLint 错误
